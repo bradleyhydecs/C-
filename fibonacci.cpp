@@ -1,7 +1,6 @@
+using namespace std;
 #include <vector>
 #include <iostream>
-
-using namespace std;
 
 int mem_f[5000];
 
