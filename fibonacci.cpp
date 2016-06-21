@@ -11,7 +11,6 @@ int f(int num)
     if (num == 1)
         return 1;
 
-
     if (mem_f[num] != 0)
         return mem_f[num];
 
