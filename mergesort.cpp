@@ -52,6 +52,7 @@ int  merge(int *arr, int start, int mid, int end)
 	}
 }
 
+// partition array for merge process
 int  mergesort(int *arr, int start, int end)
 {
 	if (start < end)
