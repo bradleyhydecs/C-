@@ -1,11 +1,9 @@
 using namespace std;
 #include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
+#include <assert.h>
 
 int  bsearch(int *arr, int start, int end, int target)
 {
-	printf("start: %d and end %d \n", start, end);
 	if (arr[start] == target)
 		return start;
 	else if (start == end) 
@@ -18,22 +16,20 @@ int  bsearch(int *arr, int start, int end, int target)
 	else if (arr[mid] < target) 
 		return bsearch(arr, mid+1, end, target);
 	else
-		return bsearch(arr, start, mid-1, target);
+		return bsearch(arr, start, mid, target);
 }
 
 int main()
 {
 	int arr[10] = {2,6,7,9,13,18,19,21,29,67};
-    int location = bsearch(arr,0,10,2);
-    printf("----------->location: %d \n", location);
-    int location2 = bsearch(arr,0,10,67);
-    printf("----------->location: %d \n", location2);
-    // int location3 = bsearch(arr,0,10,1);
-    // printf("----------->location: %d \n", location3);
-    int location4 = bsearch(arr,0,10,77);
-    printf("----------->location: %d \n", location4);
-    int location5 = bsearch(arr,0,10,6);
-    printf("----------->location: %d \n", location5);
-    int location6 = bsearch(arr,0,10,18);
-    printf("----------->location: %d \n", location6);
+
+	assert(bsearch(arr,0,10,2) == 0);
+	assert(bsearch(arr,0,10,67) == 9);
+	assert(bsearch(arr,0,10,1) == -1);
+	assert(bsearch(arr,0,10,100) == -1);
+	assert(bsearch(arr,0,10,18) == 5);
+	assert(bsearch(arr,0,10,29) == 8);
+	assert(bsearch(arr,0,10,6) == 1);
+
+	cout << "it works" << endl;
 }
