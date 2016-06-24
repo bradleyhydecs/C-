@@ -7,6 +7,9 @@ struct Node
 	int data;
 	struct Node *next;
 };
+
+// store the head of the list here for now
+// list implementation is not important for practice
 Node* L;
 
 
@@ -26,12 +29,22 @@ void printList(Node *head)
 }
 
 //
+// create a new node
+//
+Node* createNode(int data)
+{
+	Node* n = (struct Node*) malloc(sizeof(struct Node));
+	n->data = data;
+	n->next = NULL;
+	return n;
+}
+
+//
 // insert a node at end of list
 //
-Node* Insert(Node *head, int data)
+Node* InsertAtEnd(Node *head, int data)
 {
-	Node *temp = new Node();
-	temp->data = data;
+	Node *temp = createNode(data);
 
 	if (head == NULL)
 	{
@@ -54,28 +67,21 @@ Node* Insert(Node *head, int data)
 // creates a new list for testing functions
 // list = [1 -> 2 -> 3 -> 4 -> 5]
 //
-void initializeList()
+Node* initializeList()
 {
-	Node *head = new Node();
-	head->data = 1;
+	Node *head = createNode(1);
 	L = head;
-
-	Node *two = new Node();
-	two->data = 2;
-
-	Node *three = new Node();
-	three->data = 3;
-
-	Node *four = new Node();
-	four->data = 4;
-
-	Node *five = new Node();
-	five->data = 5;
+	Node *two = createNode(2);
+	Node *three = createNode(3);
+	Node *four = createNode(4);
+	Node *five = createNode(5);
 
 	head->next = two;
 	two->next = three;
 	three->next = four;
 	four->next = five;
+
+	return head;
 }
 
 //
@@ -151,44 +157,101 @@ Node* deleteItemAtIndex(Node* head, int index)
 
 }
 
+//
+// insert node at front of list
+//
+void InsertAtFront(int data)
+{
+	Node* n = createNode(data);
+	n->next = L;
+	L = n;
+}
+
+//
+// delete node at end of list
+//
+Node* DeleteAtEnd(Node* head)
+{
+	// list of size 1
+	if (head->next == NULL)
+	{
+		free(head);
+		return NULL;
+	}
+
+	// list of size > 1
+	Node* curr = head;
+	Node* prev;
+	while (curr->next != NULL)
+	{
+		prev = curr;
+		curr = curr->next;
+	}
+
+	prev->next = NULL;
+	free(curr);
+	return head;
+}
+
+//
+// delete node at the front of the list
+//
+Node* DeleteAtFront(Node* head)
+{
+	if (head->next == NULL)
+	{
+		free(head);
+		return NULL;
+	}
+	else
+	{
+		L = head->next;
+		free(head);
+		return L;
+	}
+}
+
+//
+//
+//
 int main()
 {
-	initializeList();
+	// create a list
+	L = initializeList();
 	printList(L);
 
-	//L = reverseList(L);
-	L = reverseListRecursively(L);
+	// test insert at end
+	InsertAtEnd(L, 8);
+	InsertAtEnd(L, 9);
 	printList(L);
 
-	L = deleteItemAtIndex(L, 0);
-	assert(L->data == 4);
-	assert(L->next->data == 3);
-	assert(L->next->next->data == 2);
-	assert(L->next->next->next->data == 1);
-	assert(L->next->next->next->next == NULL);
-	// printList(L);
+	// test reverse
+	L = reverseList(L);
+	printList(L);
 
+	L = reverseList(L);
+	printList(L);
+
+	// test insert at front
+	InsertAtFront(0);
+	InsertAtFront(-1);
+	printList(L);
+
+	// test delete at end
+	L = DeleteAtEnd(L);
+	L = DeleteAtEnd(L);
+	printList(L);
+
+	// test delete item at specific index
+	L = deleteItemAtIndex(L, 0);
+	L = deleteItemAtIndex(L, 5);
 	L = deleteItemAtIndex(L, 2);
-	assert(L->data == 4);
-	assert(L->next->data == 3);
-	assert(L->next->next->data == 1);
-	assert(L->next->next->next == NULL);
-	// printList(L);
+	printList(L);
 
-	L = deleteItemAtIndex(L, 2);
-	assert(L->data == 4);
-	assert(L->next->data == 3);
-	assert(L->next->next == NULL);
-	// printList(L);
-
-	L = deleteItemAtIndex(L, 0);
-	assert(L->data == 3);
-	assert(L->next == NULL);
-	// printList(L);
-
-	L = deleteItemAtIndex(L, 0);
-	assert(L == NULL);
-	// printList(L);
+	// test delete at front
+	L = DeleteAtFront(L);
+	L = DeleteAtFront(L);
+	printList(L);
 
 	return EXIT_SUCCESS;
 }
