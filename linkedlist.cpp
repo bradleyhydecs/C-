@@ -10,8 +10,7 @@ struct Node
 
 // store the head of the list here for now
 // list implementation is not important for practice
-Node* L;
-
+Node* L = NULL;
 
 //
 // print list, each item on new line
@@ -42,7 +41,7 @@ Node* createNode(int data)
 //
 // insert a node at end of list
 //
-Node* InsertAtEnd(Node *head, int data)
+Node* insertAtEnd(Node *head, int data)
 {
 	Node *temp = createNode(data);
 
@@ -67,14 +66,13 @@ Node* InsertAtEnd(Node *head, int data)
 // creates a new list for testing functions
 // list = [1 -> 2 -> 3 -> 4 -> 5]
 //
-Node* initializeList()
+Node* initializeList(int num1, int num2, int num3, int num4, int num5)
 {
-	Node *head = createNode(1);
-	L = head;
-	Node *two = createNode(2);
-	Node *three = createNode(3);
-	Node *four = createNode(4);
-	Node *five = createNode(5);
+	Node *head = createNode(num1);
+	Node *two = createNode(num2);
+	Node *three = createNode(num3);
+	Node *four = createNode(num4);
+	Node *five = createNode(num5);
 
 	head->next = two;
 	two->next = three;
@@ -160,17 +158,17 @@ Node* deleteItemAtIndex(Node* head, int index)
 //
 // insert node at front of list
 //
-void InsertAtFront(int data)
+void insertAtFront(Node* head, int data)
 {
 	Node* n = createNode(data);
-	n->next = L;
+	n->next = head;
 	L = n;
 }
 
 //
 // delete node at end of list
 //
-Node* DeleteAtEnd(Node* head)
+Node* deleteAtEnd(Node* head)
 {
 	// list of size 1
 	if (head->next == NULL)
@@ -196,7 +194,7 @@ Node* DeleteAtEnd(Node* head)
 //
 // delete node at the front of the list
 //
-Node* DeleteAtFront(Node* head)
+Node* deleteAtFront(Node* head)
 {
 	if (head->next == NULL)
 	{
@@ -212,17 +210,99 @@ Node* DeleteAtFront(Node* head)
 }
 
 //
+// removes duplicates from list
+// @precondition: the list is sorted
+//
+Node* deleteDuplicates(Node* head)
+{
+	if (head->next == NULL)
+	{
+		return head;
+	}
+
+	Node* curr = head;
+	Node* temp;
+
+	while(curr->next != NULL)
+	{
+		if (curr->data == curr->next->data)
+		{
+			temp = curr->next;
+			curr->next = curr->next->next;
+			free(temp);
+		}
+		else
+		{
+			curr = curr->next;
+		}
+	}
+	return head;
+}
+
+//
+// insert item at specific index
+//
+void insertItemAtIndex(Node* head, int data, int index)
+{
+	Node* n = createNode(data);
+	// insert at front
+	if (index == 0)
+	{
+		n->next = head;
+		L = n;
+	}
+	else
+	{
+		int currIndex = 0;
+		Node* curr = head;
+		Node* prev = NULL;
+
+		while (curr != NULL)
+		{
+			if (currIndex == index)
+			{
+				prev->next = n;
+				n->next = curr;
+			}
+
+			currIndex++;
+			prev = curr;
+			curr = curr->next;
+		}
+	}
+}
+
+//
+// merge two sorted lists
+//
+Node* mergeLists(Node* a, Node* b) {
+    if (a == NULL) {
+        return b;
+    } else if (b == NULL) {
+        return a;
+    }
+
+    if (a->data < b->data) {
+        a->next = mergeLists(a->next, b);
+        return a;
+    } else {
+        b->next = mergeLists(a, b->next);
+        return b;
+    }
+}
+
+//
 //
 //
 int main()
 {
 	// create a list
-	L = initializeList();
+	L = initializeList(1,2,3,4,5);
 	printList(L);
 
 	// test insert at end
-	InsertAtEnd(L, 8);
-	InsertAtEnd(L, 9);
+	insertAtEnd(L, 8);
+	insertAtEnd(L, 9);
 	printList(L);
 
 	// test reverse
@@ -233,13 +313,13 @@ int main()
 	printList(L);
 
 	// test insert at front
-	InsertAtFront(0);
-	InsertAtFront(-1);
+	insertAtFront(L, 0);
+	insertAtFront(L, -1);
 	printList(L);
 
 	// test delete at end
-	L = DeleteAtEnd(L);
-	L = DeleteAtEnd(L);
+	L = deleteAtEnd(L);
+	L = deleteAtEnd(L);
 	printList(L);
 
 	// test delete item at specific index
@@ -249,9 +329,46 @@ int main()
 	printList(L);
 
 	// test delete at front
-	L = DeleteAtFront(L);
-	L = DeleteAtFront(L);
+	L = deleteAtFront(L);
+	L = deleteAtFront(L);
 	printList(L);
+
+	// test insert at specific index
+	insertItemAtIndex(L,-1,0);
+	cout << "inserting at index 0 ";printList(L);
+
+	insertItemAtIndex(L,-1,0);
+	cout << "inserting at index 0 ";printList(L);
+
+	insertItemAtIndex(L,-2,2);
+	cout << "inserting at index 2 ";printList(L);
+
+	insertItemAtIndex(L,-2,4);
+	cout << "inserting at index 4 ";printList(L);
+	
+	L = initializeList(1,2,3,4,5);
+	insertAtFront(L, 1);
+	L = deleteAtEnd(L);
+	L = deleteAtEnd(L);
+	insertAtEnd(L, 3);
+	insertAtEnd(L, 4);
+	insertAtEnd(L, 5);
+	insertAtEnd(L, 5);
+	printList(L);
+
+	// test delete duplicates from sorted list
+	L = deleteDuplicates(L);
+	printList(L);
+
+	L = initializeList(5,20,30,40,50);
+	printList(L);	
+	Node* L2 = initializeList(10,42,43,55,88);
+	insertAtEnd(L2, 96);
+	insertAtEnd(L2, 99);
+	printList(L2);	
+
+	L = mergeLists(L, L2);
+	printList(L);	
 
 	return EXIT_SUCCESS;
 }
