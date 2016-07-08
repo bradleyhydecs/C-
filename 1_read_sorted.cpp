@@ -4,18 +4,18 @@
 
 #include <iostream>
 #include <fstream>
-#include "1_order_functions.h"
+#include "cs6771.h"
 
 int main()
 {
 	unsigned int a, b, c;
-	
+
 	std::ifstream file ("1_output.txt");
 	file >> a;
 	file >> b;
 	file >> c;
 
-	order3(a,b,c);
+	cs6771::order3(a,b,c);
 
 	std::cout << a << std::endl;
 	std::cout << b << std::endl;

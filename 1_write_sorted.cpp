@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "1_order_functions.h"
+#include "cs6771.h"
 
 int main()
 {
@@ -14,7 +14,7 @@ int main()
 	std::cin >> b;
 	std::cin >> c;
 
-	order3(&a,&b,&c);
+	cs6771::order3(&a,&b,&c);
 
 	std::ofstream file;
 	file.open("1_output.txt");
