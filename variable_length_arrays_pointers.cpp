@@ -11,6 +11,11 @@ int main()
 	std::cin >> num_arrays >> num_queries;
 	
         // creates an array of pointers
+        //        
+        //        int* 
+        // v -->  int* 
+        //        int* 
+        //
 	unsigned int** v {new unsigned int*[num_arrays]};
 
 	for (unsigned int i {0}; i < num_arrays; i++)
@@ -18,6 +23,12 @@ int main()
 		unsigned int array_length;
 		std::cin >> array_length;
 
+		// assign an int array to the pointer 
+		//
+		//        int* --> unsigned int[array_length]
+        	// v -->  int* 
+        	//        int* 
+		//
 		v[i] = new unsigned int[array_length];
 
 		for (unsigned int j {0}; j < array_length; j++)
