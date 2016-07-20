@@ -8,9 +8,9 @@
 int main()
 {
 	unsigned int num_arrays, num_queries;
-
 	std::cin >> num_arrays >> num_queries;
-
+	
+        // creates an array of pointers
 	unsigned int** v {new unsigned int*[num_arrays]};
 
 	for (unsigned int i {0}; i < num_arrays; i++)
